@@ -1,0 +1,5 @@
+packages: *.cabal
+
+package ponysay-server
+    shared: False
+    executable-dynamic: False
