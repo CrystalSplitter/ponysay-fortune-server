@@ -1,5 +1,5 @@
 packages: *.cabal
 
-package ponysay-server
+package ponysay-fortune-server
     shared: False
     executable-dynamic: False

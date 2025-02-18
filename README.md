@@ -1,11 +1,11 @@
-# Ponysay Webserver (ponysay-server)
+# Ponysay Fortune Webserver (ponysay-fortune-server)
 
 Run ponysay, but as a webserver!
 
 ## Running from command line
 
 ```shell
-$ ponysay-server
+$ ponysay-fortune-server
 ```
 
 This runs on port `3000` by default.
@@ -17,15 +17,15 @@ This runs on port `3000` by default.
 Try it out with:
 
 ```shell
-$ nix shell github:CrystalSplitter/ponysay-server
-$ ponysay-server
+$ nix shell github:CrystalSplitter/ponysay-fortune-server
+$ ponysay-fortune-server
 ```
 
 And install with:
 
 ```shell
-$ nix profile install github:CrystalSplitter/ponysay-server
-$ ponysay-server
+$ nix profile install github:CrystalSplitter/ponysay-fortune-server
+$ ponysay-fortune-server
 ```
 
 ### Nix (Non-Flakes)
@@ -68,7 +68,7 @@ Type=exec
 Restart=always
 RestartSec=2
 User=runner
-ExecStart=/home/runner/bin/ponysay-server
+ExecStart=/home/runner/bin/ponysay-fortune-server
 
 [Install]
 WantedBy=multi-user.target
@@ -76,5 +76,5 @@ WantedBy=multi-user.target
 
 Replace `runner` with your service runner account. **Note that this example
 makes `runner` root equivalent**, as `runner` can write to
-`.local/bin` or `/home/runner/bin/ponysay-server`. Ultimately, both `ponysay`
-and `ansi2html` must be in the service `PATH` for `ponysay-server` to run.
+`.local/bin` or `/home/runner/bin/ponysay-fortune-server`. Ultimately, both `ponysay`
+and `ansi2html` must be in the service `PATH` for `ponysay-fortune-server` to run.

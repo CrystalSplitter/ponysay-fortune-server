@@ -14,9 +14,9 @@ let
     python3Packages.ansi2html
   ];
 
-  ponysay-server-core = pkgs.haskellPackages.mkDerivation {
-    pname = "ponysay-server";
-    version = "1.0.0.0";
+  ponysay-fortune-server-core = pkgs.haskellPackages.mkDerivation {
+    pname = "ponysay-fortune-server";
+    version = "0.1.0.0";
     src = ./.;
     doHoogle = false;
     doHaddock = false;
@@ -38,11 +38,11 @@ let
 in
 
 pkgs.symlinkJoin {
-  name = "ponysay-server";
+  name = "ponysay-fortune-server";
   paths =
     with pkgs;
     [
-      ponysay-server-core
+      ponysay-fortune-server-core
     ]
     ++ systemDepends;
 }
