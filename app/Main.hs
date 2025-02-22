@@ -33,8 +33,9 @@ import System.Process qualified as Proc
 -- ------------------------------------------------------------------------------------------------
 
 data Arguments = Arguments
-    { port :: Int
+    { argsPort :: Int
     , quiet :: Bool
+    , argsBufferSize :: Int
     }
 
 data PonyResult = PonyResult ExitCode BU.ByteString
@@ -42,6 +43,7 @@ data PonyResult = PonyResult ExitCode BU.ByteString
 data CountedChannel a = CountedChannel
     { ccAmount :: MVar Int
     , chan :: Chan a
+    , ccMaxSize :: Int
     }
 
 type Logger = (String -> IO ())
@@ -54,13 +56,13 @@ main :: IO ()
 main = do
     args <- Args.execParser prgrmOpts
     let logS = if quiet args then noLogs else stdoutLogs
-    logS ("Listening on port " <> show (port args))
+    logS ("Listening on port " <> show (argsPort args))
     ponyBuffer <- do
         amnt <- newMVar 0
         myChan <- newChan
-        pure $ CountedChannel amnt myChan
+        pure $ CountedChannel amnt myChan (argsBufferSize args)
     _threadID <- forkIO (generatorThread logS ponyBuffer)
-    Warp.run (port args) (app logS ponyBuffer)
+    Warp.run (argsPort args) (app logS ponyBuffer)
   where
     prgrmOpts =
         Args.info
@@ -75,7 +77,7 @@ parseArgs = do
                 <> Args.short 'q'
                 <> Args.help "Don't produce any logging."
             )
-    port <-
+    argsPort <-
         Args.option
             Args.auto
             ( Args.long "port"
@@ -84,6 +86,14 @@ parseArgs = do
                 <> Args.value defaultPort
                 <> Args.metavar "PORTNUM"
             )
+    argsBufferSize <-
+        Args.option
+            Args.auto
+            ( Args.long "buffer-size"
+                <> Args.short 'b'
+                <> Args.help "Number of ponies to pre-buffer."
+                <> Args.value defaultPonyBufferSize
+                <> Args.metavar "NUM")
     pure Arguments{..}
 
 -- Web server -------------------------------------------------------------------------------------
@@ -130,7 +140,7 @@ pollForMore logS channel =
 generatorThread :: Logger -> CountedChannel PonyResult -> IO ()
 generatorThread logS ponyBuffer = do
     count <- readMVar (ccAmount ponyBuffer)
-    if count < ponyBufferSize
+    if count < ccMaxSize ponyBuffer
         then do
             logS "Generating pony..."
             newPony <- generatePony
@@ -159,8 +169,10 @@ generatePony = do
     htmlOutput <-
         Proc.readProcess
             "ansi2html"
-            []
-            (ponysayOutput <> "\n\n  Refresh for a new pony fortune.")
+            ["-a"]
+            (ponysayOutput
+                <> "\n\n  refresh for a new pony fortune."
+                <> "\n  or you can go back to https://crystalwobsite.gay")
     pure $ Just (PonyResult ExitSuccess (BU.fromString htmlOutput))
 
 -- Utils ------------------------------------------------------------------------------------------
@@ -173,8 +185,8 @@ stdoutLogs s = do
 noLogs :: String -> IO ()
 noLogs _ = pure ()
 
-ponyBufferSize :: Int
-ponyBufferSize = 100
+defaultPonyBufferSize :: Int
+defaultPonyBufferSize = 30
 
 defaultPort :: Int
 defaultPort = 3000
