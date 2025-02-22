@@ -1,11 +1,12 @@
 {
   pkgs,
+  extraPkgs,
   ...
 }:
 
 let
-  systemDepends = with pkgs; [
-    ponysay
+  systemDepends = with pkgs; with extraPkgs; [
+    ponysay-modern-bash
     fortune
     # aha is an alternative ansi to html converter.
     # much smaller dependency stack, faster, but

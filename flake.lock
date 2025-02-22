@@ -15,9 +15,44 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1739937773,
+        "narHash": "sha256-1A5Fz47396+IX30c6jCVcKxjRYxW0JXZUDajk3U8eQY=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "423245005256659773c82825a9e7d5a91192ba8f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "ponysay-modern": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1740204710,
+        "narHash": "sha256-52CDb3c4Pvt/w33PfizYz/h+mRsEj6O1Xj2ZHznMYDM=",
+        "owner": "CrystalSplitter",
+        "repo": "ponysay-modern",
+        "rev": "82db8cf08ed7594043c0c47855b74282451cc0e4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "CrystalSplitter",
+        "ref": "master",
+        "repo": "ponysay-modern",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "ponysay-modern": "ponysay-modern"
       }
     }
   },
