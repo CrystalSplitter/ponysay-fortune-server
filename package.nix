@@ -27,6 +27,7 @@ let
       base
       blaze-builder
       http-types
+      optparse-applicative
       time
       utf8-string
       wai
