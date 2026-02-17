@@ -8,7 +8,6 @@ import Blaze.ByteString.Builder (copyByteString, fromByteString)
 import Control.Concurrent (
     Chan,
     MVar,
-    forkIO,
     modifyMVar,
     newChan,
     newMVar,
@@ -48,6 +47,26 @@ data CountedChannel a = CountedChannel
     }
 
 type Logger = (String -> IO ())
+
+-- ------------------------------------------------------------------------------------------------
+-- Constants
+-- ------------------------------------------------------------------------------------------------
+
+-- | Executable for fortune
+fortuneExec :: String
+fortuneExec = "fortune"
+
+-- | Executable for ansi2html
+ansi2HtmlExec :: String
+ansi2HtmlExec = "ansi2html"
+
+-- | Executable for aha
+ahaExec :: String
+ahaExec = "aha"
+
+-- | Executable for ponysay
+ponysayExec :: String
+ponysayExec = "ponysay"
 
 -- ------------------------------------------------------------------------------------------------
 -- Functions
@@ -166,11 +185,11 @@ generatorThread logS ponyBuffer = do
 
 generatePony :: IO (Maybe PonyResult)
 generatePony = do
-    fortuneOutput <- Proc.readProcess "fortune" [] ""
-    ponysayOutput <- Proc.readProcess "ponysay" ["-X", "-W", "100"] fortuneOutput
+    fortuneOutput <- Proc.readProcess fortuneExec [] ""
+    ponysayOutput <- Proc.readProcess ponysayExec ["-X", "-W", "100"] fortuneOutput
     htmlOutput <-
         Proc.readProcess
-            "ansi2html"
+            ansi2HtmlExec
             ["-a"]
             (ponysayOutput
                 <> "\n\n  refresh for a new pony fortune."
