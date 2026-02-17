@@ -17,6 +17,7 @@ import Control.Concurrent (
     threadDelay,
     writeChan,
  )
+import Control.Concurrent.Async as Async
 import Data.ByteString.UTF8 qualified as BU
 import Data.Time qualified as Time
 import Data.Time.Format.ISO8601 qualified as Time
@@ -61,8 +62,9 @@ main = do
         amnt <- newMVar 0
         myChan <- newChan
         pure $ CountedChannel amnt myChan (argsBufferSize args)
-    _threadID <- forkIO (generatorThread logS ponyBuffer)
-    Warp.run (argsPort args) (app logS ponyBuffer)
+    let generatorExpr = (generatorThread logS ponyBuffer)
+    let warpExpr = Warp.run (argsPort args) (app logS ponyBuffer)
+    Async.race_ generatorExpr warpExpr
   where
     prgrmOpts =
         Args.info
