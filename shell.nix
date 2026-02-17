@@ -7,8 +7,8 @@
 
 pkgs.mkShell {
   packages = with pkgs.haskellPackages; [
-    ghc
     cabal-install
+    ghc
     haskell-language-server
   ];
   inputsFrom = [ ponysay-fortune-server-core ];
