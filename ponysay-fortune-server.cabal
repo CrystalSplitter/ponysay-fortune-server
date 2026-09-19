@@ -61,6 +61,7 @@ executable ponysay-fortune-server
     -- Import common warning flags.
     import:           warnings
     ghc-options:      -O
+                      -threaded
 
     -- .hs or .lhs file containing the Main module.
     main-is:          Main.hs
