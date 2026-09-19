@@ -44,7 +44,7 @@ separately. These are:
 
 
 * [ansi2html](https://pypi.org/project/ansi2html/)
-* [ponysay fork](https://github.com/erkin/ponysay)
+* [ponysay fork](https://github.com/CrystalSplitter/ponysay-modern)
   (The original [ponysay](https://github.com/erkin/ponysay), is no longer
   maintained and has many outstanding issues.)
 
