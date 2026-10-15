@@ -1,3 +1,6 @@
+> [!Warning]
+> This page has migrated to codeberg: https://codeberg.org/CrystalSplitter/ponysay-fortune-server
+
 # Ponysay Fortune Webserver (ponysay-fortune-server)
 
 Run ponysay, but as a webserver!
